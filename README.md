@@ -101,3 +101,7 @@ pytest
 ```
 
 The FastAPI sample app lives under `examples/fastapi_app`.
+
+## Release Process
+
+See [`RELEASING.md`](RELEASING.md) for version-bump instructions, changelog expectations, and details on how the GitHub Actions workflow publishes to PyPI.
