@@ -2,18 +2,26 @@
 
 from __future__ import annotations
 
+import os
 from typing import TYPE_CHECKING, Optional
 
-from pydantic import BaseSettings, Field, HttpUrl, validator
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator
 
 DEFAULT_BASE_URL = "http://localhost:8080"
+ENV_PREFIX = "GOOGLE_AUTHZ_"
 
 if TYPE_CHECKING:  # pragma: no cover - the real imports happen lazily below
     from .client import AsyncGoogleAuthzClient, GoogleAuthzClient
 
 
-class GoogleAuthzSettings(BaseSettings):
+def _env_key(field_name: str) -> str:
+    return f"{ENV_PREFIX}{field_name.upper()}"
+
+
+class GoogleAuthzSettings(BaseModel):
     """Typed configuration object that can source values from env vars."""
+
+    model_config = ConfigDict(extra="ignore")
 
     base_url: HttpUrl | str = Field(DEFAULT_BASE_URL, description="google-authz base URL")
     timeout_seconds: float = Field(5.0, description="HTTP timeout for authz requests")
@@ -27,11 +35,20 @@ class GoogleAuthzSettings(BaseSettings):
         description="Header name used when shared_secret is provided",
     )
 
-    class Config:
-        env_prefix = "GOOGLE_AUTHZ_"
-        case_sensitive = False
+    def __init__(self, **data):
+        # Pull env vars that were not explicitly provided.
+        env_values = {}
+        for field_name in self.__class__.model_fields:
+            if field_name in data:
+                continue
+            env_value = os.getenv(_env_key(field_name))
+            if env_value is not None:
+                env_values[field_name] = env_value
+        merged_data = {**env_values, **data}
+        super().__init__(**merged_data)
 
-    @validator("base_url", pre=True)
+    @field_validator("base_url", mode="before")
+    @classmethod
     def _strip_trailing_slash(cls, value: str) -> str:
         return value.rstrip("/") if isinstance(value, str) else value
 
