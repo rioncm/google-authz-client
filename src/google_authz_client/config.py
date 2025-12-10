@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from pydantic import BaseSettings, Field, HttpUrl, validator
 
 DEFAULT_BASE_URL = "http://localhost:8080"
+
+if TYPE_CHECKING:  # pragma: no cover - the real imports happen lazily below
+    from .client import AsyncGoogleAuthzClient, GoogleAuthzClient
 
 
 class GoogleAuthzSettings(BaseSettings):
