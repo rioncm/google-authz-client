@@ -1,15 +1,15 @@
 import httpx
 import pytest
 
+from google_authz_client.client import AsyncGoogleAuthzClient
+from google_authz_client.fastapi import current_user, require_permission
+
 fastapi = pytest.importorskip("fastapi")
 testclient_module = pytest.importorskip("fastapi.testclient")
 
 Depends = fastapi.Depends
 FastAPI = fastapi.FastAPI
 TestClient = testclient_module.TestClient
-
-from google_authz_client.client import AsyncGoogleAuthzClient
-from google_authz_client.fastapi import current_user, require_permission
 
 
 def _build_mock_async_client():

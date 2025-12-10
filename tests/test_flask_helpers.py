@@ -1,12 +1,12 @@
 import httpx
 import pytest
 
+from google_authz_client.client import GoogleAuthzClient
+from google_authz_client.flask import register_current_user_middleware, require_permission
+
 flask_module = pytest.importorskip("flask")
 Flask = flask_module.Flask
 g = flask_module.g
-
-from google_authz_client.client import GoogleAuthzClient
-from google_authz_client.flask import register_current_user_middleware, require_permission
 
 
 def _build_flask_app():

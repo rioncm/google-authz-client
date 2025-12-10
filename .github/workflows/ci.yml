@@ -19,6 +19,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install ".[dev,fastapi,flask,django]"
       - name: Ruff
-        run: ruff check src tests
+        run: ruff check src tests --no-cache
       - name: Pytest
         run: pytest
