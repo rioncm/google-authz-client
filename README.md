@@ -91,6 +91,25 @@ client = settings.build_async_client()
 
 Key settings include `base_url`, `timeout_seconds`, `verify_tls`, and `shared_secret`.
 
+### Token Type and Authz Requests
+
+The client posts to `/authz` and `/authz/check` with a JSON body that includes either
+`id_token` or `session_token`. By default, the client uses `id_token`, which matches the
+current `google-authz` server implementation.
+
+```python
+from google_authz_client.client import AsyncGoogleAuthzClient
+
+client = AsyncGoogleAuthzClient(token_type="id_token")
+```
+
+If you are using a `google-authz` session token (for example, after completing the
+`/login` flow), configure the client accordingly:
+
+```python
+client = AsyncGoogleAuthzClient(token_type="session_token")
+```
+
 ### Using a Remote google-authz Service
 
 By default, the client points at `http://localhost:8080`. If your `google-authz` service runs

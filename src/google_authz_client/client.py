@@ -21,12 +21,16 @@ class _BaseClient:
         verify_tls: bool,
         shared_secret: Optional[str],
         shared_secret_header: str,
+        token_type: str,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.timeout_seconds = timeout_seconds
         self.verify_tls = verify_tls
         self.shared_secret = shared_secret
         self.shared_secret_header = shared_secret_header
+        if token_type not in {"id_token", "session_token"}:
+            raise ValueError("token_type must be 'id_token' or 'session_token'")
+        self.token_type = token_type
 
     def _headers(self, token: str | None) -> Dict[str, str]:
         if not token:
@@ -38,6 +42,14 @@ class _BaseClient:
         if self.shared_secret:
             headers[self.shared_secret_header] = self.shared_secret
         return headers
+
+    def _token_payload(self, token: str, token_type: Optional[str]) -> Dict[str, str]:
+        if not token:
+            raise MissingCredentialsError("Token is required for google-authz calls")
+        chosen_type = token_type or self.token_type
+        if chosen_type not in {"id_token", "session_token"}:
+            raise ValueError("token_type must be 'id_token' or 'session_token'")
+        return {chosen_type: token}
 
     def _effective_auth_from_payload(self, payload: Dict[str, Any]) -> EffectiveAuth:
         subject = str(payload.get("subject") or payload.get("user", "anonymous"))
@@ -68,6 +80,7 @@ class GoogleAuthzClient(_BaseClient):
         verify_tls: bool = True,
         shared_secret: Optional[str] = None,
         shared_secret_header: str = "X-Authz-Shared-Secret",
+        token_type: str = "id_token",
         client: Optional[httpx.Client] = None,
     ) -> None:
         super().__init__(
@@ -76,6 +89,7 @@ class GoogleAuthzClient(_BaseClient):
             verify_tls=verify_tls,
             shared_secret=shared_secret,
             shared_secret_header=shared_secret_header,
+            token_type=token_type,
         )
         self._client = client or httpx.Client(
             base_url=self.base_url,
@@ -91,12 +105,17 @@ class GoogleAuthzClient(_BaseClient):
         token: str,
         *,
         cache: EffectiveAuthCache = None,
+        token_type: Optional[str] = None,
     ) -> EffectiveAuth:
         if cache and token in cache:
             cached = cache[token]
             if isinstance(cached, EffectiveAuth):
                 return cached
-        response = self._client.get("/authz", headers=self._headers(token))
+        response = self._client.post(
+            "/authz",
+            headers=self._headers(token),
+            json=self._token_payload(token, token_type),
+        )
         self._raise_for_status(response)
         payload = response.json()
         auth = self._effective_auth_from_payload(payload)
@@ -109,11 +128,16 @@ class GoogleAuthzClient(_BaseClient):
         module: str,
         action: str,
         token: str,
+        token_type: Optional[str] = None,
     ) -> PermissionCheckResult:
         response = self._client.post(
             "/authz/check",
             headers=self._headers(token),
-            json={"module": module, "action": action},
+            json={
+                "module": module,
+                "action": action,
+                **self._token_payload(token, token_type),
+            },
         )
         self._raise_for_status(response)
         return PermissionCheckResult.from_payload(response.json())
@@ -130,6 +154,7 @@ class AsyncGoogleAuthzClient(_BaseClient):
         verify_tls: bool = True,
         shared_secret: Optional[str] = None,
         shared_secret_header: str = "X-Authz-Shared-Secret",
+        token_type: str = "id_token",
         client: Optional[httpx.AsyncClient] = None,
     ) -> None:
         super().__init__(
@@ -138,6 +163,7 @@ class AsyncGoogleAuthzClient(_BaseClient):
             verify_tls=verify_tls,
             shared_secret=shared_secret,
             shared_secret_header=shared_secret_header,
+            token_type=token_type,
         )
         self._client = client or httpx.AsyncClient(
             base_url=self.base_url,
@@ -153,12 +179,17 @@ class AsyncGoogleAuthzClient(_BaseClient):
         token: str,
         *,
         cache: EffectiveAuthCache = None,
+        token_type: Optional[str] = None,
     ) -> EffectiveAuth:
         if cache and token in cache:
             cached = cache[token]
             if isinstance(cached, EffectiveAuth):
                 return cached
-        response = await self._client.get("/authz", headers=self._headers(token))
+        response = await self._client.post(
+            "/authz",
+            headers=self._headers(token),
+            json=self._token_payload(token, token_type),
+        )
         self._raise_for_status(response)
         payload = response.json()
         auth = self._effective_auth_from_payload(payload)
@@ -171,11 +202,16 @@ class AsyncGoogleAuthzClient(_BaseClient):
         module: str,
         action: str,
         token: str,
+        token_type: Optional[str] = None,
     ) -> PermissionCheckResult:
         response = await self._client.post(
             "/authz/check",
             headers=self._headers(token),
-            json={"module": module, "action": action},
+            json={
+                "module": module,
+                "action": action,
+                **self._token_payload(token, token_type),
+            },
         )
         self._raise_for_status(response)
         return PermissionCheckResult.from_payload(response.json())
