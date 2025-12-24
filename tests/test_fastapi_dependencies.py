@@ -1,3 +1,5 @@
+import json
+
 import httpx
 import pytest
 
@@ -14,9 +16,9 @@ TestClient = testclient_module.TestClient
 
 def _build_mock_async_client():
     def handler(request: httpx.Request) -> httpx.Response:
-        token = request.headers.get("Authorization", "")
-        token = token.split("Bearer ")[-1] if "Bearer" in token else token
         if request.url.path == "/authz":
+            payload = json.loads(request.content.decode())
+            token = payload.get("id_token", "")
             return httpx.Response(
                 200,
                 json={
@@ -25,6 +27,8 @@ def _build_mock_async_client():
                 },
             )
         if request.url.path == "/authz/check":
+            payload = json.loads(request.content.decode())
+            token = payload.get("id_token", "")
             allowed = token == "good-token"
             payload = {"allowed": allowed, "permitted_actions": ["read"] if allowed else []}
             return httpx.Response(200, json=payload)

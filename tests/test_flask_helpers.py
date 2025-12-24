@@ -1,3 +1,5 @@
+import json
+
 import httpx
 import pytest
 
@@ -11,14 +13,16 @@ g = flask_module.g
 
 def _build_flask_app():
     def handler(request: httpx.Request) -> httpx.Response:
-        token = request.headers.get("Authorization", "")
-        token = token.replace("Bearer ", "")
         if request.url.path == "/authz":
+            payload = json.loads(request.content.decode())
+            token = payload.get("id_token", "")
             return httpx.Response(
                 200,
                 json={"subject": token, "permissions": {"inventory": ["create"]}},
             )
         if request.url.path == "/authz/check":
+            payload = json.loads(request.content.decode())
+            token = payload.get("id_token", "")
             allowed = token == "good-token"
             return httpx.Response(
                 200,
