@@ -91,6 +91,39 @@ client = settings.build_async_client()
 
 Key settings include `base_url`, `timeout_seconds`, `verify_tls`, and `shared_secret`.
 
+### Using a Remote google-authz Service
+
+By default, the client points at `http://localhost:8080`. If your `google-authz` service runs
+in another environment (container, VM, or a separate host), configure the base URL explicitly
+so the client can reach it over the network.
+
+Environment-based configuration:
+
+```bash
+export GOOGLE_AUTHZ_BASE_URL="https://authz.example.com"
+export GOOGLE_AUTHZ_VERIFY_TLS="true"
+```
+
+Code-based configuration:
+
+```python
+from google_authz_client.client import AsyncGoogleAuthzClient
+
+client = AsyncGoogleAuthzClient(
+    base_url="https://authz.example.com",
+    verify_tls=True,
+)
+```
+
+If you are terminating TLS in front of `google-authz`, keep `verify_tls=True` and configure
+the appropriate certificates on the client host. For local development or self-signed certs,
+set `verify_tls=False` or `GOOGLE_AUTHZ_VERIFY_TLS=false` with caution.
+
+`shared_secret` is optional. The core `google-authz` service relies on network ACLs
+(`AUTHZ_ALLOWED_NETWORKS`) rather than a shared-secret header. Only set
+`GOOGLE_AUTHZ_SHARED_SECRET` (or `shared_secret=...`) if you have explicitly added a layer
+that enforces it (for example, an API gateway or custom fork).
+
 ## Development
 
 Run linters and tests with:
