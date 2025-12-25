@@ -15,7 +15,7 @@ current service will reject it unless it is extended to verify access tokens.
 The user activates an extension function which makes a call to the central API at
 `https://api.pminc.me` (which can differ from the authz host, e.g. `https://auth.pminc.me`).
 
-1. The code grabs the current user ID token (OpenID token).
+1. The code grabs the current user OAuth access token.
 
 ``` javascript
 function getHeaders() {
@@ -28,7 +28,7 @@ function getHeaders() {
   return headers;
 }
 function getAuthToken() {
-  return ScriptApp.getIdentityToken(); // ID token (OpenID), not OAuth access token.
+  return ScriptApp.getOAuthToken(); // OAuth access token.
 }
 
 function isUserAuthorized() {
@@ -54,7 +54,7 @@ function getApData() {
   }
 }
 ```
-3. The API receives the request, forwards the ID token to `google-authz`, and validates
+3. The API receives the request, forwards the access token to `google-authz`, and validates
    the user + authorizations.
 
 # lib/authz.py
@@ -128,14 +128,14 @@ Subsequent calls use the session token (cookie or header).
 
 # Flow 2: OAuth Completed Elsewhere (ID Token Validation)
 
-This path is for clients that already have a Google OpenID ID token (Apps Script, backend
-service, or another OAuth-enabled app). The client sends the ID token to your API, and the
+This path is for clients that already have a Google OAuth access token (Apps Script, backend
+service, or another OAuth-enabled app). The client sends the access token to your API, and the
 API forwards it to `google-authz` for validation and authorization.
 
-1. Client obtains an **ID token** externally.
-2. Client calls your API with `Authorization: Bearer <id_token>`.
+1. Client obtains an **access token** externally.
+2. Client calls your API with `Authorization: Bearer <access_token>`.
 3. Your API uses `google-authz-client` which forwards the token to `/authz` or `/authz/check`.
-4. `google-authz` verifies the ID token and returns the EffectiveAuth payload.
+4. `google-authz` verifies the access token and returns the EffectiveAuth payload.
 
-If you need to support OAuth access tokens instead, the `google-authz` server must be
-extended to verify access tokens; the client library does not distinguish token type.
+If you need to support ID tokens instead, configure `google-authz` with the correct audience
+and send an OpenID ID token. The client library forwards whatever token it receives.

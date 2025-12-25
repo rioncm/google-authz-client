@@ -4,7 +4,7 @@ All notable changes will be documented in this file following [Keep a Changelog]
 
 ## [0.6.0] - 2025-12-24
 ### Added
-- `token_type` configuration for authz clients to send `id_token` or `session_token` payloads.
+- `token_type` configuration for authz clients to send `id_token`, `session_token`, or `access_token` payloads.
 - README guidance on token type selection and remote authz configuration.
 
 ### Changed

@@ -93,9 +93,8 @@ Key settings include `base_url`, `timeout_seconds`, `verify_tls`, and `shared_se
 
 ### Token Type and Authz Requests
 
-The client posts to `/authz` and `/authz/check` with a JSON body that includes either
-`id_token` or `session_token`. By default, the client uses `id_token`, which matches the
-current `google-authz` server implementation.
+The client posts to `/authz` and `/authz/check` with a JSON body that includes exactly one of
+`id_token`, `session_token`, or `access_token`. By default, the client uses `id_token`.
 
 ```python
 from google_authz_client.client import AsyncGoogleAuthzClient
@@ -109,6 +108,14 @@ If you are using a `google-authz` session token (for example, after completing t
 ```python
 client = AsyncGoogleAuthzClient(token_type="session_token")
 ```
+
+If you are forwarding an OAuth access token (for example, from Apps Script), use:
+
+```python
+client = AsyncGoogleAuthzClient(token_type="access_token")
+```
+
+In Apps Script, the access token is returned by `ScriptApp.getOAuthToken()`.
 
 ### Using a Remote google-authz Service
 

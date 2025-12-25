@@ -28,8 +28,8 @@ class _BaseClient:
         self.verify_tls = verify_tls
         self.shared_secret = shared_secret
         self.shared_secret_header = shared_secret_header
-        if token_type not in {"id_token", "session_token"}:
-            raise ValueError("token_type must be 'id_token' or 'session_token'")
+        if token_type not in {"id_token", "session_token", "access_token"}:
+            raise ValueError("token_type must be 'id_token', 'session_token', or 'access_token'")
         self.token_type = token_type
 
     def _headers(self, token: str | None) -> Dict[str, str]:
@@ -47,8 +47,8 @@ class _BaseClient:
         if not token:
             raise MissingCredentialsError("Token is required for google-authz calls")
         chosen_type = token_type or self.token_type
-        if chosen_type not in {"id_token", "session_token"}:
-            raise ValueError("token_type must be 'id_token' or 'session_token'")
+        if chosen_type not in {"id_token", "session_token", "access_token"}:
+            raise ValueError("token_type must be 'id_token', 'session_token', or 'access_token'")
         return {chosen_type: token}
 
     def _effective_auth_from_payload(self, payload: Dict[str, Any]) -> EffectiveAuth:
