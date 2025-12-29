@@ -54,6 +54,32 @@ def test_check_permission_parses_response():
     assert result.permitted_actions == ["read"]
 
 
+def test_check_permission_handles_forbidden_response():
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/authz/check":
+            payload = json.loads(request.content.decode())
+            assert payload == {"module": "inventory", "action": "read", "id_token": "token"}
+            return httpx.Response(
+                403,
+                json={
+                    "authorized": False,
+                    "decision": "denied",
+                    "evaluated_permission": "inventory:read",
+                    "permitted_actions": [],
+                    "source": "cache",
+                },
+            )
+        raise AssertionError("Unexpected path")
+
+    transport = httpx.MockTransport(handler)
+    http_client = httpx.Client(transport=transport, base_url="https://authz.local")
+    client = GoogleAuthzClient(client=http_client, base_url="https://authz.local")
+
+    result = client.check_permission("inventory", "read", "token")
+    assert result.allowed is False
+    assert result.permitted_actions == []
+
+
 @pytest.mark.asyncio
 async def test_async_client_calls_endpoints():
     def handler(request: httpx.Request) -> httpx.Response:

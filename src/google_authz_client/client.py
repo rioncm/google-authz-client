@@ -139,6 +139,8 @@ class GoogleAuthzClient(_BaseClient):
                 **self._token_payload(token, token_type),
             },
         )
+        if response.status_code == 403:
+            return PermissionCheckResult.from_payload(response.json())
         self._raise_for_status(response)
         return PermissionCheckResult.from_payload(response.json())
 
@@ -213,5 +215,7 @@ class AsyncGoogleAuthzClient(_BaseClient):
                 **self._token_payload(token, token_type),
             },
         )
+        if response.status_code == 403:
+            return PermissionCheckResult.from_payload(response.json())
         self._raise_for_status(response)
         return PermissionCheckResult.from_payload(response.json())

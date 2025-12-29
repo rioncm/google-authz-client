@@ -40,7 +40,10 @@ class PermissionCheckResult:
 
     @classmethod
     def from_payload(cls, payload: Dict[str, object]) -> "PermissionCheckResult":
-        allowed = bool(payload.get("allowed"))
+        if "allowed" in payload:
+            allowed = bool(payload.get("allowed"))
+        else:
+            allowed = bool(payload.get("authorized"))
         actions = payload.get("permitted_actions") or []
         if isinstance(actions, Iterable) and not isinstance(actions, (str, bytes)):
             permitted = list(actions)

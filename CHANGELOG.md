@@ -10,6 +10,7 @@ All notable changes will be documented in this file following [Keep a Changelog]
 ### Changed
 - Authz client requests now POST JSON payloads to `/authz` and `/authz/check` to match the server API.
 - FastAPI flow documentation clarifies ID token usage and response codes.
+- Permission checks now parse `/authz/check` 403 responses that use `authorized` instead of `allowed`.
 
 ## [0.5.0] - 2024-05-01
 ### Added
