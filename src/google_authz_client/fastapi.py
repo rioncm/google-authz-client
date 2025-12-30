@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Awaitable, Callable, Iterable, List, Sequence
+from typing import Awaitable, Callable, Dict, Iterable, List, Sequence
 
 from fastapi import Depends, HTTPException, Request, status
 
@@ -40,6 +40,26 @@ def current_user(
         except GoogleAuthzError as exc:  # pragma: no cover - defensive
             raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(exc)) from exc
         return auth
+
+    return dependency
+
+
+def effective_auth_payload(
+    client: AsyncGoogleAuthzClient,
+    *,
+    cookie_name: str = "session",
+    header_name: str = "authorization",
+) -> Callable[[EffectiveAuth], Awaitable[Dict[str, object]]]:
+    """Return a dependency that exposes the raw effective_auth payload."""
+
+    async def dependency(
+        auth: EffectiveAuth = Depends(current_user(client, cookie_name=cookie_name, header_name=header_name)),
+    ) -> Dict[str, object]:
+        raw = auth.raw or {}
+        payload = raw.get("effective_auth")
+        if isinstance(payload, dict):
+            return payload
+        return {"subject": auth.subject, "permissions": auth.permissions}
 
     return dependency
 
