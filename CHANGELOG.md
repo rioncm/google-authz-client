@@ -2,6 +2,10 @@
 
 All notable changes will be documented in this file following [Keep a Changelog](https://keepachangelog.com/) and [SemVer](https://semver.org/).
 
+## [0.7.0] - 2025-12-29
+### Added
+- FastAPI `effective_auth_payload` dependency for accessing the raw `effective_auth` payload.
+
 ## [0.6.0] - 2025-12-24
 ### Added
 - `token_type` configuration for authz clients to send `id_token`, `session_token`, or `access_token` payloads.
@@ -27,6 +31,7 @@ All notable changes will be documented in this file following [Keep a Changelog]
 ### Added
 - Foundational HTTP client and EffectiveAuth models used across frameworks.
 
+[0.7.0]: https://github.com/example/google-authz-client/releases/tag/v0.7.0
 [0.6.0]: https://github.com/example/google-authz-client/releases/tag/v0.6.0
 [0.5.0]: https://github.com/example/google-authz-client/releases/tag/v0.5.0
 [0.4.0]: https://github.com/example/google-authz-client/releases/tag/v0.4.0

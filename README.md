@@ -36,7 +36,7 @@ Use this when you are hacking on the library itself so your changes are reloaded
 ```python
 from fastapi import Depends, FastAPI
 from google_authz_client.client import AsyncGoogleAuthzClient
-from google_authz_client.fastapi import current_user, require_permission
+from google_authz_client.fastapi import current_user, effective_auth_payload, require_permission
 
 client = AsyncGoogleAuthzClient()
 app = FastAPI()
@@ -47,6 +47,12 @@ async def read_inventory(
     _=Depends(require_permission("inventory:read", client=client)),
 ):
     return {"subject": authz.subject, "perms": authz.permissions}
+
+@app.get("/inventory/debug")
+async def read_inventory_debug(
+    authz_payload=Depends(effective_auth_payload(client)),
+):
+    return {"effective_auth": authz_payload}
 ```
 
 `current_user` discovers a token via cookies or the `Authorization` header, fetches the caller’s effective authorization, and raises HTTP 401/403 when missing or denied.
