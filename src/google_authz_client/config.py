@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 from typing import TYPE_CHECKING, Optional
+from urllib.parse import urlencode
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator
 
@@ -34,6 +35,7 @@ class GoogleAuthzSettings(BaseModel):
         default="X-Authz-Shared-Secret",
         description="Header name used when shared_secret is provided",
     )
+    token_type: str = Field("id_token", description="Token payload type for /authz requests")
 
     def __init__(self, **data):
         # Pull env vars that were not explicitly provided.
@@ -52,6 +54,13 @@ class GoogleAuthzSettings(BaseModel):
     def _strip_trailing_slash(cls, value: str) -> str:
         return value.rstrip("/") if isinstance(value, str) else value
 
+    @field_validator("token_type")
+    @classmethod
+    def _validate_token_type(cls, value: str) -> str:
+        if value not in {"id_token", "session_token", "access_token"}:
+            raise ValueError("token_type must be 'id_token', 'session_token', or 'access_token'")
+        return value
+
     def build_client(self) -> "GoogleAuthzClient":
         from .client import GoogleAuthzClient
 
@@ -61,6 +70,7 @@ class GoogleAuthzSettings(BaseModel):
             verify_tls=self.verify_tls,
             shared_secret=self.shared_secret,
             shared_secret_header=self.shared_secret_header,
+            token_type=self.token_type,
         )
 
     def build_async_client(self) -> "AsyncGoogleAuthzClient":
@@ -72,4 +82,9 @@ class GoogleAuthzSettings(BaseModel):
             verify_tls=self.verify_tls,
             shared_secret=self.shared_secret,
             shared_secret_header=self.shared_secret_header,
+            token_type=self.token_type,
         )
+
+    def login_app_url(self, app: str, redirect_uri: str) -> str:
+        query = urlencode({"app": app, "redirect_uri": redirect_uri})
+        return f"{str(self.base_url).rstrip('/')}/login/app?{query}"

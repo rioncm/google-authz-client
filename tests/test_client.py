@@ -34,6 +34,32 @@ def test_fetch_effective_auth_uses_cache():
     assert calls["authz"] == 1
 
 
+def test_fetch_effective_auth_parses_server_response_shape():
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/authz":
+            return httpx.Response(
+                200,
+                json={
+                    "effective_auth": {
+                        "email": "alice@example.com",
+                        "permissions": ["helpers:login", "inventory:read"],
+                    },
+                    "source": "cache",
+                },
+            )
+        raise AssertionError("Unexpected path")
+
+    transport = httpx.MockTransport(handler)
+    http_client = httpx.Client(transport=transport, base_url="https://authz.local")
+    client = GoogleAuthzClient(client=http_client, base_url="https://authz.local")
+
+    auth = client.fetch_effective_auth("token")
+
+    assert auth.subject == "alice@example.com"
+    assert auth.permissions == {"helpers": ["login"], "inventory": ["read"]}
+    assert auth.raw["source"] == "cache"
+
+
 def test_check_permission_parses_response():
     def handler(request: httpx.Request) -> httpx.Response:
         if request.url.path == "/authz/check":

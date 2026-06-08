@@ -95,7 +95,7 @@ settings = GoogleAuthzSettings()
 client = settings.build_async_client()
 ```
 
-Key settings include `base_url`, `timeout_seconds`, `verify_tls`, and `shared_secret`.
+Key settings include `base_url`, `timeout_seconds`, `verify_tls`, `shared_secret`, and `token_type`.
 
 ### Token Type and Authz Requests
 
@@ -134,6 +134,7 @@ Environment-based configuration:
 ```bash
 export GOOGLE_AUTHZ_BASE_URL="https://authz.example.com"
 export GOOGLE_AUTHZ_VERIFY_TLS="true"
+export GOOGLE_AUTHZ_TOKEN_TYPE="access_token"
 ```
 
 Code-based configuration:
@@ -155,6 +156,53 @@ set `verify_tls=False` or `GOOGLE_AUTHZ_VERIFY_TLS=false` with caution.
 (`AUTHZ_ALLOWED_NETWORKS`) rather than a shared-secret header. Only set
 `GOOGLE_AUTHZ_SHARED_SECRET` (or `shared_secret=...`) if you have explicitly added a layer
 that enforces it (for example, an API gateway or custom fork).
+
+### Browser App Login
+
+Browser apps use `google-authz` `/login/app` to establish a signed session cookie, then use
+that cookie as a `session_token` for `/authz` and `/authz/check`.
+
+```python
+from google_authz_client.config import GoogleAuthzSettings
+from google_authz_client.fastapi import current_user, require_permission
+
+settings = GoogleAuthzSettings(
+    base_url="https://auth.pminc.me",
+    token_type="session_token",
+)
+client = settings.build_async_client()
+
+login_url = settings.login_app_url(
+    "helpers",
+    "https://helpers.k8.pminc.me/",
+)
+
+current_user_dep = current_user(client, cookie_name="ga_session")
+login_required = require_permission(
+    "helpers:login",
+    client=client,
+    cookie_name="ga_session",
+)
+```
+
+The cookie contains a signed session token, not the full RBAC document. Use `/authz` output
+for menus and `/authz/check` or route dependencies for action enforcement.
+
+### Apps Script / Access Token APIs
+
+Apps Script and similar Workspace clients should keep using the existing access-token flow:
+
+```python
+client = AsyncGoogleAuthzClient(
+    base_url="https://auth.pminc.me",
+    verify_tls=True,
+    token_type="access_token",
+)
+```
+
+The caller sends `Authorization: Bearer <ScriptApp.getOAuthToken()>` to the local API, and
+the local API uses the client dependency helpers to enforce RBAC. This flow does not use
+`/login/app` or browser cookies.
 
 ## Development
 

@@ -52,14 +52,31 @@ class _BaseClient:
         return {chosen_type: token}
 
     def _effective_auth_from_payload(self, payload: Dict[str, Any]) -> EffectiveAuth:
-        subject = str(payload.get("subject") or payload.get("user", "anonymous"))
-        permissions = payload.get("permissions") or {}
+        effective_auth = payload.get("effective_auth")
+        source = effective_auth if isinstance(effective_auth, dict) else payload
+        subject = str(
+            source.get("subject")
+            or source.get("email")
+            or payload.get("subject")
+            or payload.get("user", "anonymous")
+        )
+        permissions = source.get("permissions") or source.get("functions") or {}
         normalized: Dict[str, list[str]] = {}
-        for module, actions in permissions.items():
-            if isinstance(actions, (list, tuple, set)):
-                normalized[module] = [str(action) for action in actions]
-            elif isinstance(actions, str):
-                normalized[module] = [actions]
+        if isinstance(permissions, dict):
+            for module, actions in permissions.items():
+                if isinstance(actions, (list, tuple, set)):
+                    normalized[str(module)] = [str(action) for action in actions]
+                elif isinstance(actions, str):
+                    normalized[str(module)] = [actions]
+        elif isinstance(permissions, (list, tuple, set)):
+            for permission in permissions:
+                module, separator, action = str(permission).partition(":")
+                if separator and module and action:
+                    normalized.setdefault(module, []).append(action)
+        elif isinstance(permissions, str):
+            module, separator, action = permissions.partition(":")
+            if separator and module and action:
+                normalized.setdefault(module, []).append(action)
         return EffectiveAuth(subject=subject, permissions=normalized, raw=payload)
 
     def _raise_for_status(self, response: httpx.Response) -> None:
