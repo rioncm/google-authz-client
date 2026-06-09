@@ -1,0 +1,67 @@
+{
+  "examples/fastapi_app/main.py": {
+    "mtime": 1766597934.4932446,
+    "ast_hash": "15e710cc96e67935638be736d88357f2",
+    "semantic_hash": "15e710cc96e67935638be736d88357f2"
+  },
+  "src/google_authz_client/__init__.py": {
+    "mtime": 1765290486.205601,
+    "ast_hash": "1513b45633542d301c69f24877e4748e",
+    "semantic_hash": "1513b45633542d301c69f24877e4748e"
+  },
+  "src/google_authz_client/client.py": {
+    "mtime": 1780955236.632886,
+    "ast_hash": "3b3450fefe98282f9d752100108ae5da",
+    "semantic_hash": "3b3450fefe98282f9d752100108ae5da"
+  },
+  "src/google_authz_client/config.py": {
+    "mtime": 1780955350.7769656,
+    "ast_hash": "cb38594aa140fe0979b043ad37f2b13c",
+    "semantic_hash": "cb38594aa140fe0979b043ad37f2b13c"
+  },
+  "src/google_authz_client/django.py": {
+    "mtime": 1765291255.1702945,
+    "ast_hash": "390129b2cbc4c945b77393960bf24eb0",
+    "semantic_hash": "390129b2cbc4c945b77393960bf24eb0"
+  },
+  "src/google_authz_client/errors.py": {
+    "mtime": 1765290491.1685112,
+    "ast_hash": "e8f0749b97567540d732555caacbbaa5",
+    "semantic_hash": "e8f0749b97567540d732555caacbbaa5"
+  },
+  "src/google_authz_client/fastapi.py": {
+    "mtime": 1767128314.2795472,
+    "ast_hash": "51040d53cad2f2124743a2ca1943df1b",
+    "semantic_hash": "51040d53cad2f2124743a2ca1943df1b"
+  },
+  "src/google_authz_client/flask.py": {
+    "mtime": 1765291036.4749064,
+    "ast_hash": "602a9eb8b56e623c2de11fadcd9d24f1",
+    "semantic_hash": "602a9eb8b56e623c2de11fadcd9d24f1"
+  },
+  "src/google_authz_client/models.py": {
+    "mtime": 1767021443.3964918,
+    "ast_hash": "cc6cda3e577c057bbb93dcf84b5f42ea",
+    "semantic_hash": "cc6cda3e577c057bbb93dcf84b5f42ea"
+  },
+  "tests/test_client.py": {
+    "mtime": 1780956076.5794318,
+    "ast_hash": "31587c2bd1a789905f9c597480992a05",
+    "semantic_hash": "31587c2bd1a789905f9c597480992a05"
+  },
+  "tests/test_config.py": {
+    "mtime": 1780956339.574101,
+    "ast_hash": "6bb5e0eb97801c56e16b8449314e8a84",
+    "semantic_hash": "6bb5e0eb97801c56e16b8449314e8a84"
+  },
+  "tests/test_fastapi_dependencies.py": {
+    "mtime": 1766606743.2812603,
+    "ast_hash": "c91c51a15f129b57da52f65f1d16734a",
+    "semantic_hash": "c91c51a15f129b57da52f65f1d16734a"
+  },
+  "tests/test_flask_helpers.py": {
+    "mtime": 1766606750.972887,
+    "ast_hash": "871808c7c393ebfdc31f61e6ec199d67",
+    "semantic_hash": "871808c7c393ebfdc31f61e6ec199d67"
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "communities": {
+    "0": [
+      "asyncgoogleauthzclient",
+      "google_authz_client_fastapi",
+      "google_authz_client_fastapi_all_of",
+      "google_authz_client_fastapi_any_of",
+      "google_authz_client_fastapi_current_user",
+      "google_authz_client_fastapi_effective_auth_payload",
+      "google_authz_client_fastapi_get_cache",
+      "google_authz_client_fastapi_rationale_1",
+      "google_authz_client_fastapi_rationale_103",
+      "google_authz_client_fastapi_rationale_129",
+      "google_authz_client_fastapi_rationale_31",
+      "google_authz_client_fastapi_rationale_53",
+      "google_authz_client_fastapi_rationale_75",
+      "google_authz_client_fastapi_require_permission",
+      "request",
+      "src_google_authz_client_fastapi_py_effectiveauth"
+    ],
+    "1": [
+      "flask",
+      "google_authz_client_flask",
+      "google_authz_client_flask_get_cache",
+      "google_authz_client_flask_get_token",
+      "google_authz_client_flask_rationale_1",
+      "google_authz_client_flask_rationale_34",
+      "google_authz_client_flask_rationale_54",
+      "google_authz_client_flask_register_current_user_middleware",
+      "google_authz_client_flask_require_permission",
+      "src_google_authz_client_flask_py_effectiveauth",
+      "src_google_authz_client_flask_py_googleauthzclient",
+      "tests_test_flask_helpers",
+      "tests_test_flask_helpers_build_flask_app",
+      "tests_test_flask_helpers_flask_app",
+      "tests_test_flask_helpers_test_flask_helper_allows_valid_token",
+      "tests_test_flask_helpers_test_flask_helper_blocks_invalid_permission"
+    ],
+    "2": [
+      "basemodel",
+      "google_authz_client_config",
+      "google_authz_client_config_env_key",
+      "google_authz_client_config_googleauthzsettings",
+      "google_authz_client_config_googleauthzsettings_build_async_client",
+      "google_authz_client_config_googleauthzsettings_build_client",
+      "google_authz_client_config_googleauthzsettings_init",
+      "google_authz_client_config_googleauthzsettings_login_app_url",
+      "google_authz_client_config_googleauthzsettings_strip_trailing_slash",
+      "google_authz_client_config_googleauthzsettings_validate_token_type",
+      "google_authz_client_config_rationale_1",
+      "google_authz_client_config_rationale_23",
+      "tests_test_config",
+      "tests_test_config_test_settings_builds_client_with_token_type",
+      "tests_test_config_test_settings_builds_login_app_url"
+    ],
+    "3": [
+      "fastapi",
+      "fastapi_app_main",
+      "fastapi_app_main_create_inventory_item",
+      "fastapi_app_main_delete_inventory_item",
+      "fastapi_app_main_get_chase_bankrec",
+      "fastapi_app_main_list_inventory",
+      "fastapi_app_main_rationale_1",
+      "tests_test_fastapi_dependencies",
+      "tests_test_fastapi_dependencies_build_mock_async_client",
+      "tests_test_fastapi_dependencies_create_test_app",
+      "tests_test_fastapi_dependencies_test_fastapi_dependency_allows_authorized_call",
+      "tests_test_fastapi_dependencies_test_fastapi_dependency_blocks_invalid_permission",
+      "tests_test_fastapi_dependencies_test_fastapi_dependency_requires_token"
+    ],
+    "4": [
+      "google_authz_client_client_googleauthzclient_close",
+      "google_authz_client_client_rationale_90",
+      "google_authz_client_django",
+      "google_authz_client_django_googleauthzmiddleware",
+      "google_authz_client_django_googleauthzmiddleware_call",
+      "google_authz_client_django_googleauthzmiddleware_init",
+      "google_authz_client_django_import_django",
+      "google_authz_client_django_rationale_1",
+      "google_authz_client_django_rationale_22",
+      "google_authz_client_django_rationale_60",
+      "google_authz_client_django_require_permission",
+      "readme_googleauthzclient",
+      "src_google_authz_client_django_py_googleauthzclient"
+    ],
+    "5": [
+      "google_authz_client_client",
+      "google_authz_client_client_rationale_1",
+      "google_authz_client_init",
+      "google_authz_client_init_rationale_1",
+      "google_authz_client_models",
+      "google_authz_client_models_rationale_1",
+      "tests_test_client",
+      "tests_test_client_test_async_client_calls_endpoints",
+      "tests_test_client_test_check_permission_handles_forbidden_response",
+      "tests_test_client_test_check_permission_parses_response",
+      "tests_test_client_test_fetch_effective_auth_parses_server_response_shape",
+      "tests_test_client_test_fetch_effective_auth_uses_cache"
+    ],
+    "6": [
+      "any",
+      "effectiveauthcache",
+      "google_authz_client_client_baseclient_effective_auth_from_payload",
+      "google_authz_client_client_baseclient_headers",
+      "google_authz_client_client_baseclient_token_payload",
+      "google_authz_client_client_googleauthzclient_check_permission",
+      "google_authz_client_client_googleauthzclient_fetch_effective_auth",
+      "google_authz_client_errors_missingcredentialserror",
+      "google_authz_client_errors_rationale_9",
+      "permissioncheckresult",
+      "src_google_authz_client_client_py_effectiveauth"
+    ],
+    "7": [
+      "google_authz_client_errors",
+      "google_authz_client_errors_permissiondeniederror",
+      "google_authz_client_errors_rationale_1",
+      "google_authz_client_errors_rationale_13",
+      "google_authz_client_models_permissioncheckresult",
+      "google_authz_client_models_permissioncheckresult_ensure_allowed",
+      "google_authz_client_models_permissioncheckresult_from_payload",
+      "google_authz_client_models_rationale_29",
+      "google_authz_client_models_rationale_35"
+    ],
+    "8": [
+      "asyncclient",
+      "client",
+      "google_authz_client_client_baseclient_init",
+      "google_authz_client_models_effectiveauth",
+      "google_authz_client_models_effectiveauth_permitted_actions",
+      "google_authz_client_models_rationale_11",
+      "google_authz_client_models_rationale_23"
+    ],
+    "9": [
+      "fastapi_flow_authz_client",
+      "fastapi_flow_current_user",
+      "fastapi_flow_require_permission",
+      "readme_asyncgoogleauthzclient",
+      "readme_current_user",
+      "readme_fastapi_current_user",
+      "readme_require_permission"
+    ],
+    "10": [
+      "exception",
+      "google_authz_client_client_baseclient",
+      "google_authz_client_client_baseclient_raise_for_status",
+      "google_authz_client_errors_googleauthzerror",
+      "google_authz_client_errors_rationale_5",
+      "response"
+    ],
+    "11": [
+      "changelog_fastapi_effective_auth_payload",
+      "fastapi_app_team_member",
+      "readme_fastapi_effective_auth_payload"
+    ],
+    "12": [
+      "google_authz_client_client_asyncgoogleauthzclient",
+      "google_authz_client_client_asyncgoogleauthzclient_aclose",
+      "google_authz_client_client_rationale_166"
+    ],
+    "13": [
+      "google_authz_client_models_effectiveauth_allows",
+      "google_authz_client_models_rationale_18"
+    ],
+    "14": [
+      "readme_django_googleauthzclient"
+    ],
+    "15": [
+      "readme_django_googleauthzmiddleware"
+    ],
+    "16": [
+      "readme_flask_googleauthzclient"
+    ],
+    "17": [
+      "readme_flask_register_current_user_middleware"
+    ],
+    "18": [
+      "readme_googleauthzclient_client_asyncgoogleauthzclient"
+    ],
+    "19": [
+      "readme_googleauthzsettings"
+    ]
+  },
+  "cohesion": {
+    "0": 0.25,
+    "1": 0.18333333333333332,
+    "2": 0.1619047619047619,
+    "3": 0.20512820512820512,
+    "4": 0.19230769230769232,
+    "5": 0.18181818181818182,
+    "6": 0.3090909090909091,
+    "7": 0.25,
+    "8": 0.3333333333333333,
+    "9": 0.2857142857142857,
+    "10": 0.4666666666666667,
+    "11": 0.6666666666666666,
+    "12": 0.6666666666666666,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0
+  },
+  "gods": [
+    {
+      "id": "google_authz_client_models_effectiveauth",
+      "label": "EffectiveAuth",
+      "degree": 25
+    },
+    {
+      "id": "readme_googleauthzclient",
+      "label": "google-authz-client library",
+      "degree": 22
+    },
+    {
+      "id": "google_authz_client_errors_googleauthzerror",
+      "label": "GoogleAuthzError",
+      "degree": 21
+    },
+    {
+      "id": "google_authz_client_client_asyncgoogleauthzclient",
+      "label": "AsyncGoogleAuthzClient",
+      "degree": 19
+    },
+    {
+      "id": "google_authz_client_models_permissioncheckresult",
+      "label": "PermissionCheckResult",
+      "degree": 17
+    },
+    {
+      "id": "google_authz_client_errors_missingcredentialserror",
+      "label": "MissingCredentialsError",
+      "degree": 16
+    },
+    {
+      "id": "google_authz_client_config_googleauthzsettings",
+      "label": "GoogleAuthzSettings",
+      "degree": 14
+    },
+    {
+      "id": "google_authz_client_client_baseclient",
+      "label": "_BaseClient",
+      "degree": 12
+    },
+    {
+      "id": "request",
+      "label": "Request",
+      "degree": 10
+    },
+    {
+      "id": "src_google_authz_client_fastapi_py_effectiveauth",
+      "label": "EffectiveAuth",
+      "degree": 10
+    }
+  ],
+  "surprises": [
+    {
+      "source": "google-authz-client library",
+      "target": "_BaseClient",
+      "source_files": [
+        "README.md",
+        "src/google_authz_client/client.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "Synchronous, long-lived httpx client.",
+      "target": "google-authz-client library",
+      "source_files": [
+        "src/google_authz_client/client.py",
+        "README.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "rationale_for",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories; peripheral node `Synchronous, long-lived httpx client.` unexpectedly reaches hub `google-authz-client library`"
+    },
+    {
+      "source": "effective_auth_payload from google_authz_client.fastapi",
+      "target": "FastAPI effective_auth_payload dependency",
+      "source_files": [
+        "README.md",
+        "CHANGELOG.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "FastAPI",
+      "target": "AsyncGoogleAuthzClient",
+      "source_files": [
+        "tests/test_fastapi_dependencies.py",
+        "src/google_authz_client/client.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "test_settings_builds_client_with_token_type()",
+      "target": "GoogleAuthzSettings",
+      "source_files": [
+        "tests/test_config.py",
+        "src/google_authz_client/config.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `test_settings_builds_client_with_token_type()` unexpectedly reaches hub `GoogleAuthzSettings`"
+    }
+  ],
+  "tokens": {
+    "input": 4712,
+    "output": 1512
+  }
+}
