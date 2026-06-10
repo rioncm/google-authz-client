@@ -1,5 +1,8 @@
 # google-authz-client Context
 
+Understand your human by [reading](about_rion_business.md)
+
+
 This repo is the Python client/integration library for the sibling `../google-authz` service. It provides sync and async HTTP clients plus framework helpers for FastAPI, Flask, and Django.
 
 ## Current Shape
